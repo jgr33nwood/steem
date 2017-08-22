@@ -66,4 +66,12 @@ namespace steemit { namespace protocol {
       return checksum_type::hash( ids[0] );
    }
 
+   size_t signed_block::calculate_min_size()
+   {
+      signed_block b;
+      while( b.witness.length() < STEEMIT_MIN_ACCOUNT_NAME_LENGTH )
+         b.witness += 'a';
+      return fc::raw::pack_size( b );
+   }
+
 } } // steemit::protocol

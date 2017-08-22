@@ -88,7 +88,11 @@ database_impl::database_impl( database& self )
    : _self(self), _evaluator_registry(self) {}
 
 database::database()
-   : _my( new database_impl(*this) ) {}
+   : _my( new database_impl(*this) )
+{
+   ilog( "Checking STEEMIT_MIN_BLOCK_SIZE matches expected value of ${m}", ("m", signed_block::calculate_min_size()) );
+   FC_ASSERT( STEEMIT_MIN_BLOCK_SIZE == signed_block::calculate_min_size() );
+}
 
 database::~database()
 {
@@ -2614,6 +2618,13 @@ void database::_apply_block( const signed_block& next_block )
    if( has_hardfork( STEEMIT_HARDFORK_0_12 ) )
    {
       FC_ASSERT( block_size <= gprops.maximum_block_size, "Block Size is too Big", ("next_block_num",next_block_num)("block_size", block_size)("max",gprops.maximum_block_size) );
+   }
+
+   if( block_size < STEEMIT_MIN_BLOCK_SIZE )
+   {
+      elog( "Block size is too small",
+         ("next_block_num",next_block_num)("block_size", block_size)("min",STEEMIT_MIN_BLOCK_SIZE)
+      );
    }
 
    /// modify current witness so transaction evaluators can know who included the transaction,
