@@ -1,0 +1,14 @@
+./blockget_null -1
+<-- 
+.BreakOffChain -0
+\.
+*ServerPort [192.168.0.1:9090]
+#server
+*Jgr33nwood SpamBot List
+#listpull
+greenvapesne.com:8262
+alt./greenvapesne.com/#pull
+#max downvote in .001 per 1%, default 20,000(20%)
+geno=20000
+Downvote Syntax -B/V/R
+
